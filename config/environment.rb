@@ -5,11 +5,14 @@ ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 
 require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
 
+$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "db")     
 # Require gems we care about
 require 'rubygems'
 
 require 'uri'
+require 'nokogiri'
 require 'pathname'
+require 'pry'
 
 require 'pg'
 require 'active_record'

@@ -10,34 +10,23 @@
 #             email: Faker::Internet.email
 #        )
 
-require 'faker'
+require 'open-uri'
+require 'nokogiri'
+require 'pry'
 
-User.delete_all
-Event.delete_all
 
-#Create 5,000 users
-users = 10.times.map do
-  User.create :first_name => Faker::Name.first_name,
-    :last_name  => Faker::Name.last_name,
-    :username   => Faker::Internet.user_name,
-    :email      => Faker::Internet.email,
-    :birthdate  => Date.today - 15.years - rand(20000).days
-end
+hostname = 'http://www.wicker-park-bars.com/'
+@doc = Nokogiri::HTML(open(hostname))
 
-events = 10.times.map do
-  start_time = Time.now + (rand(61) - 30).days
-  end_time   = start_time + (1 + rand(6)).hours
 
-  Event.create :creator_id    => users[rand(users.length)].id,
-    :name       => Faker::Company.name,
-    :location   => "#{Faker::Address.city}, #{Faker::Address.state_abbr}",
-    :starts_at => start_time,
-    :ends_at   => end_time
-end
+@doc.css('div#right ul').each do |bar_link|
+  args = {}
+  bar = Nokogiri::HTML(open(hostname + bar_link.css('a')[0]['href']))
+  
+  args[:name] = bar.css('div#content > div#left > div >h2').text
+  args[:description] = bar.css('div#content > div#left > div > p')[0].text
+  address = bar.css('div#content > div#left > div > p')[1].text
+  args[:address] = address.gsub(/\n+[\t]*/, '').gsub(/' '/, '').split(',')
 
-10.times do
-  users.each do |u|
-    u.attended_events.build(event_id: events[rand(10)].id)
-    u.save
-  end
+  puts Bar.create(args) 
 end
