@@ -1,0 +1,26 @@
+<section class="container">
+  <h3><%= @event.name%></h3>
+
+      <div id="event">
+      <table id="event" class="pure-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+          </thead>
+
+          <tbody>
+          <% @events.each do |event| %>
+            <tr class="">
+            
+              <td><a href="#"><%=event.name %></a></td>
+              <td><a href="#"><%=event.starts_at %></a></td>
+              <td><a href="#"><%=event.location %></a></td>
+          
+          </tr>
+          </tbody>
+        <% end %>
+        </table>
+      </div>
+    </section>

@@ -1,0 +1,13 @@
+<section>
+  <h2>New Post</h2>
+  <form action="/post/create" method="POST">
+    <label for="post-name">Post Title
+    <input type="post-name" type="text" placeholder="Post Title" name="post[:title]" required autofocus/>
+    </label>
+    <br>
+    <label for="post-body">
+    <textarea id="post-body" rows="30" cols="50" name="post[:body]" required placeholder="Enter Post here..."></textarea>
+    </label>
+    <input type="submit" class="" value="submit"><br>
+  </form>
+</section>
